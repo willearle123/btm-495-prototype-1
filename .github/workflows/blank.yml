@@ -2,15 +2,16 @@
 
 name: prototype
 
-# Public Class Payment
-    Public String PaymentId { Get; Set; }
-    Public Decimal Amount { Get; Set; }
-    Public String CurrencyCode { Get; Set; }
-    Public DateTime PaymentDate { Get; Set; }
-    Public String PaymentMethod { Get; Set; }
-    Public String TransactionId { Get; Set; }
-    Public String Status { Get; Set; }ontrols when the workflow will run
-
+ Public Class Payment
+ {
+    Public String PaymentId;
+    Public Decimal Amount;
+    Public String CurrencyCode;
+    Public DateTime PaymentDate;
+    Public String PaymentMethod;
+    Public String TransactionId;
+    Public String Status;
+}
     public class User
 {
     public int UserID { get; set; }
