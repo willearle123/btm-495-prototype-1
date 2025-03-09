@@ -14,16 +14,15 @@ name: prototype
 }
     public class User
 {
-    public int UserID { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
+    public int UserID;
+    public string Name;
+    public string Email;
     }
 on:
   using System;
 
 public class LoyaltyPointsAccount
 {
-    // Attributes
     public int AccountID { get; set; }
     public float PointsBalance { get; private set; }
     public float LifetimePointsEarned { get; private set; }
