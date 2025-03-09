@@ -2,8 +2,8 @@
 
 name: prototype
 
- Public Class Payment
- {
+public class Payment
+{
     Public String PaymentId;
     Public Decimal Amount;
     Public String CurrencyCode;
@@ -12,24 +12,35 @@ name: prototype
     Public String TransactionId;
     Public String Status;
 }
-    public class User
+
+Public class transaction
+{
+    CustomerID = customerID;
+    TransactionID = GenerateTransactionID();
+    AmountCharged = amountCharged;
+    PointsAwarded = CalculatePoints(amountCharged);
+    TimeStamp = DateTime.Now; // Auto-set to current time
+}
+
+Public class User
 {
     public int UserID;
     public string Name;
     public string Email;
     }
+Public class 
 on:
   using System;
 
 public class LoyaltyPointsAccount
 {
-    public int AccountID { get; set; }
-    public float PointsBalance { get; private set; }
-    public float LifetimePointsEarned { get; private set; }
-    public int NumberOfPastVisits { get; private set; }
-    public DateTime LastTransactionDate { get; private set; }
-    public DateTime AccountCreationDate { get; private set; }
-    public float AvailableRewards { get; private set; }
+    public int AccountID;
+    public float PointsBalance;
+    public float LifetimePointsEarned;
+    public int NumberOfPastVisits;
+    public DateTime LastTransactionDate;
+    public DateTime AccountCreationDate;
+    public float AvailableRewards;
 
     // Constructor
     public LoyaltyPointsAccount(int accountID, DateTime creationDate)
