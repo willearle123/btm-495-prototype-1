@@ -43,52 +43,7 @@ public class LoyaltyPointsAccount
     public float AvailableRewards;
 
     // Constructor
-    public LoyaltyPointsAccount(int accountID, DateTime creationDate)
-    {
-        AccountID = accountID;
-        PointsBalance = 0;
-        LifetimePointsEarned = 0;
-        NumberOfPastVisits = 0;
-        LastTransactionDate = DateTime.MinValue;
-        AccountCreationDate = creationDate;
-        AvailableRewards = 0;
-    }
-
-    // Method to Add Points
-    public void AddPoints(float transactionAmount)
-    {
-        float pointsEarned = transactionAmount / 10; // Example: Earn 1 point per $10 spent
-        PointsBalance += pointsEarned;
-        LifetimePointsEarned += pointsEarned;
-        NumberOfPastVisits++;
-        LastTransactionDate = DateTime.Now;
-
-        Console.WriteLine($"Added {pointsEarned} points. New Balance: {PointsBalance}");
-    }
-
-    // Method to Redeem Rewards
-    public bool RedeemRewards(float pointsToRedeem)
-    {
-        if (pointsToRedeem <= PointsBalance)
-        {
-            PointsBalance -= pointsToRedeem;
-            AvailableRewards -= pointsToRedeem;
-            Console.WriteLine($"Redeemed {pointsToRedeem} points. Remaining Balance: {PointsBalance}");
-            return true;
-        }
-        else
-        {
-            Console.WriteLine("Insufficient points for redemption.");
-            return false;
-        }
-    }
-
-    // Method to Check Available Rewards
-    public void CalculateAvailableRewards()
-    {
-        AvailableRewards = PointsBalance * 0.05f; // Example: 5% of points can be redeemed
-        Console.WriteLine($"Available Rewards: {AvailableRewards}");
-    }
+  
 }
 # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
