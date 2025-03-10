@@ -1,0 +1,137 @@
+name: InventoryDatabaseManagement
+
+using System;
+
+public class Owner
+{
+    public int OwnerID { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    private string PasswordHash { get; set; } 
+
+    public Owner(string name, string email, string password)
+    {
+        Name = name;
+        Email = email;
+        PasswordHash = HashPassword(password);
+    }
+
+    private string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+
+    public bool VerifyPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
+    }
+}
+
+public class Product
+{
+    public int ProductID { get; set; }
+    public string Name { get; set; }
+    public string Category { get; set; }
+    public int Quantity { get; set; }
+    public int Threshold { get; set; }
+
+    public Product(int id, string name, string category, int quantity, int threshold)
+    {
+        ProductID = id;
+        Name = name;
+        Category = category;
+        Quantity = quantity;
+        Threshold = threshold;
+    }
+
+    public bool IsLowStock()
+    {
+        return Quantity <= Threshold;
+    }
+}
+
+using System.Collections.Generic;
+
+public class InventorySystem
+{
+    private List<Product> products = new List<Product>();
+
+    public void AddProduct(Product product)
+    {
+        products.Add(product);
+        Console.WriteLine($"Product {product.Name} added to inventory.");
+    }
+
+    public void UpdateProductQuantity(int productId, int newQuantity)
+    {
+        var product = products.Find(p => p.ProductID == productId);
+        if (product != null)
+        {
+            product.Quantity = newQuantity;
+            Console.WriteLine($"Updated {product.Name} to {newQuantity} in inventory.");
+        }
+        else
+        {
+            Console.WriteLine("Product not found.");
+        }
+    }
+
+    public void CheckLowStock()
+    {
+        foreach (var product in products)
+        {
+            if (product.IsLowStock())
+            {
+                Console.WriteLine($"Low stock alert! {product.Name} is running low.");
+            }
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+public class ReportGenerator
+{
+    public string GenerateInventoryReport(List<Product> products)
+    {
+        string report = "Inventory Report\n------------------\n";
+        foreach (var product in products)
+        {
+            report += $"{product.Name} - {product.Quantity} in stock\n";
+        }
+        return report;
+    }
+}
+public class StockAlertSystem
+{
+    public void SendLowStockAlert(Product product)
+    {
+        if (product.IsLowStock())
+        {
+            Console.WriteLine($"ALERT: {product.Name} is below threshold! Consider reordering.");
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+public class ServiceTracker
+{
+    private Dictionary<string, List<Product>> serviceLogs = new Dictionary<string, List<Product>>();
+
+    public void LogServiceCompletion(string serviceName, List<Product> usedProducts)
+    {
+        if (!serviceLogs.ContainsKey(serviceName))
+        {
+            serviceLogs[serviceName] = new List<Product>();
+        }
+
+        serviceLogs[serviceName].AddRange(usedProducts);
+        Console.WriteLine($"Logged {serviceName} service with {usedProducts.Count} products used.");
+    }
+
+    public List<Product> GetServiceUsage(string serviceName)
+    {
+        return serviceLogs.ContainsKey(serviceName) ? serviceLogs[serviceName] : new List<Product>();
+    }
+}
