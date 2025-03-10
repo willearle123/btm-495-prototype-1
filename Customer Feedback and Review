@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+// Database Context
+public class CustomerReviewContext : DbContext
+{
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Owner> Owners { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+        => options.UseSqlServer("Your_Connection_String");
+}
+
+// Customer Class
+public class Customer
+{
+    [Key]
+    public string CustomerID { get; set; }
+    public string Name { get; set; }
+    public ICollection<Review> Reviews { get; set; }
+}
+
+// Review Class
+public class Review
+{
+    [Key]
+    public int ReviewID { get; set; }
+    public string CustomerID { get; set; }
+    public int TransactionID { get; set; }
+    public decimal Rating { get; set; }
+    public string Comments { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    [ForeignKey("CustomerID")]
+    public Customer Customer { get; set; }
+}
+
+// Owner Class
+public class Owner
+{
+    [Key]
+    public int OwnerID { get; set; }
+    public string Name { get; set; }
+    public ICollection<Review> Reviews { get; set; }
+}
+
+// Review Service Class
+public class ReviewService
+{
+    private readonly CustomerReviewContext _context;
+
+    public ReviewService(CustomerReviewContext context)
+    {
+        _context = context;
+    }
+
+    // Add a new review
+    public void AddReview(string customerId, int transactionId, decimal rating, string comments)
+    {
+        var review = new Review
+        {
+            CustomerID = customerId,
+            TransactionID = transactionId,
+            Rating = rating,
+            Comments = comments
+        };
+
+        _context.Reviews.Add(review);
+        _context.SaveChanges();
+    }
+
+    // Get all reviews
+    public List<Review> GetReviews()
+    {
+        return _context.Reviews.Include(r => r.Customer).ToList();
+    }
+}
