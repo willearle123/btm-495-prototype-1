@@ -1,0 +1,102 @@
+using System;
+using System.Collections.Generic;
+
+namespace BookingSchedulingSystem
+{
+    public class Booking
+    {
+        public string AppointmentID { get; set; }
+        public DateTime AppointmentDateTime { get; set; }
+        public bool ConfirmationStatus { get; set; }
+        public string AppointmentType { get; set; }
+        public int AppointmentDuration { get; set; }
+        public Customer Customer { get; set; }
+
+        public Booking(string id, DateTime dateTime, string type, int duration, Customer customer)
+        {
+            AppointmentID = id;
+            AppointmentDateTime = dateTime;
+            AppointmentType = type;
+            AppointmentDuration = duration;
+            Customer = customer;
+            ConfirmationStatus = false;
+        }
+
+        public void ConfirmAppointment()
+        {
+            ConfirmationStatus = true;
+            Console.WriteLine($"Appointment {AppointmentID} confirmed.");
+        }
+
+        public void CancelAppointment()
+        {
+            ConfirmationStatus = false;
+            Console.WriteLine($"Appointment {AppointmentID} canceled.");
+        }
+    }
+
+    public class Customer
+    {
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+
+        public Customer(string name, string phone, string email)
+        {
+            Name = name;
+            PhoneNumber = phone;
+            Email = email;
+        }
+
+        public void BookAppointment(Booking booking)
+        {
+            Console.WriteLine($"{Name} booked an appointment for {booking.AppointmentType} on {booking.AppointmentDateTime}");
+        }
+    }
+
+    public class AvailabilityDatabase
+    {
+        private List<DateTime> AvailableSlots = new List<DateTime>();
+
+        public void AddAvailableSlot(DateTime slot)
+        {
+            AvailableSlots.Add(slot);
+        }
+
+        public void RemoveAvailableSlot(DateTime slot)
+        {
+            AvailableSlots.Remove(slot);
+        }
+
+        public bool IsSlotAvailable(DateTime slot)
+        {
+            return AvailableSlots.Contains(slot);
+        }
+    }
+
+    public class AppointmentType
+    {
+        public static readonly List<string> AvailableTypes = new List<string> { "Haircuts", "Coloring", "Styling", "Waxing", "Manicure", "Pedicure" };
+
+        public static void DisplayAppointmentTypes()
+        {
+            Console.WriteLine("Available Appointment Types:");
+            foreach (var type in AvailableTypes)
+            {
+                Console.WriteLine(type);
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Example usage
+            Customer customer = new Customer("Alice", "123456789", "alice@example.com");
+            Booking booking = new Booking("A001", DateTime.Now.AddDays(1), "Haircut", 30, customer);
+            customer.BookAppointment(booking);
+            booking.ConfirmAppointment();
+        }
+    }
+}
