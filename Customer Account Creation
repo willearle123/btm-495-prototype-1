@@ -1,0 +1,89 @@
+public class SystemClass
+{
+    public string Form { get; set; }
+    public string CustomerEmail { get; set; }
+    public string CustomerFirstName { get; set; }
+    public int CustomerPhoneNumber { get; set; }
+
+    public void ShowLogingRegisterAcc()
+    {
+        Console.WriteLine("Please choose to log in or register an account.");
+    }
+
+    public void PromptNewPageForm()
+    {
+        Console.WriteLine("Redirecting to the registration form...");
+    }
+
+    public void ConfirmsAccountCreation()
+    {
+        Console.WriteLine("Account created successfully.");
+    }
+}
+
+public class Customer
+{
+    public string Email { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int PhoneNumber { get; set; }
+    public string Password { get; set; }
+    public string StreetAddress { get; set; }
+    public string City { get; set; }
+    public string PostalCode { get; set; }
+    public string Type { get; set; }
+
+    public void RegistersAccount()
+    {
+        Console.WriteLine("Registering account...");
+    }
+
+    public void SubmitsForm()
+    {
+        Console.WriteLine("Form submitted.");
+    }
+}
+
+using System.Collections.Generic;
+
+public class CustomerAccountDatabase
+{
+    private int nextCustomerID = 1;
+    private Dictionary<int, Customer> customerAccounts = new Dictionary<int, Customer>();
+
+    public int AssignCustomerID()
+    {
+        return nextCustomerID++;
+    }
+
+    public void AddCustomerAccount(Customer customer)
+    {
+        int customerID = AssignCustomerID();
+        customerAccounts.Add(customerID, customer);
+        Console.WriteLine($"Customer account added with ID: {customerID}");
+    }
+
+    public void ManageCustomerAccount(int customerID)
+    {
+        if (customerAccounts.ContainsKey(customerID))
+        {
+            Console.WriteLine("Managing customer account...");
+        }
+        else
+        {
+            Console.WriteLine("Customer account not found.");
+        }
+    }
+}
+
+using Microsoft.EntityFrameworkCore;
+
+public class CustomerDbContext : DbContext
+{
+    public DbSet<Customer> Customers { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(@"Server=YourServer;Database=YourDatabase;User Id=YourUser;Password=YourPassword;");
+    }
+}
